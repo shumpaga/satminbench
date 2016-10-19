@@ -60,3 +60,4 @@ cd $HOME
 git clone https://gitlab.lrde.epita.fr/spot/spot.git
 cd spot && git checkout aga/benchsat && autoreconf -vfi \
   && ./configure --disable-devel && make -j4
+make install

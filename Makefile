@@ -3,3 +3,6 @@ build:
 
 push:
 	docker push shumpaga/satminbench:latest
+
+run:
+	-docker run -i -t shumpaga/satminbench /bin/bash

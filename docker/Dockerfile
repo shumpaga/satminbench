@@ -20,4 +20,4 @@ RUN RUNLEVEL=1 DEBIAN_FRONTEND=noninteractive \
 
 COPY install.sh /tmp/install.sh
 RUN cd /tmp && ./install.sh; exit 0
-#RUN cd $HOME/spot && make install && cd /tmp && rm -f install.sh
+RUN cd $HOME/spot && make install && cd /tmp && rm -f install.sh; exit 0
