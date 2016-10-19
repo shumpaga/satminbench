@@ -1,8 +1,11 @@
 build:
-	docker build -t shumpaga/satminbench:latest satminbench
+	sudo docker build -t shumpaga/satminbench:latest satminbench
 
 push:
-	docker push shumpaga/satminbench:latest
+	sudo docker push shumpaga/satminbench:latest
 
 run:
-	-docker run -i -t shumpaga/satminbench /bin/bash
+	-sudo docker run -i -t shumpaga/satminbench /bin/bash
+
+pull:
+	sudo docker pull shumpaga/satminbench:latest

@@ -24,14 +24,14 @@ if test $# = 1; then
     autfilt $out --stats="$f,ltl3dra,%S,%E,$acc,%p,0,%M,%F" >> $output || exit 0
 
     if ltldo -H --timeout=$TIMEOUT -f "$f" >ltl3dra-sat-TGR$pairs-$line.hoa \
-	     "autfilt -C -H --cleanup-acc --sat-minimize ltl3dra-TGR-$line.hoa --name=%%r >%O #%f"; then
+             "autfilt -C -H --cleanup-acc --sat-minimize ltl3dra-TGR-$line.hoa --name=%%r >%O #%f"; then
 
-	if ! autfilt ltl3dra-sat-TGR$pairs-$line.hoa \
-	     --stats="$f,ltl3dra-min,%S,%E,$acc,%p,0,%M,%F" >> $output; then
-	    echo "$f,ltl3dra-min,,,,,-1,," >> $output
-	fi
+        if ! autfilt ltl3dra-sat-TGR$pairs-$line.hoa \
+             --stats="$f,ltl3dra-min,%S,%E,$acc,%p,0,%M,%F" >> $output; then
+            echo "$f,ltl3dra-min,,,,,-1,," >> $output
+        fi
     else
-	echo "$f,ltl3dra-min,,,,,$?,," >> $output
+        echo "$f,ltl3dra-min,,,,,$?,," >> $output
     fi
 
     # Run Rabinizer 3.1
@@ -40,16 +40,16 @@ if test $# = 1; then
     acc=`autfilt --cleanup-acc rabinizer-TGR-$line.hoa -H | grep acc-name | cut -d: -f2`
     acc=${acc:=other}
     autfilt rabinizer-TGR-$line.hoa \
-	    --stats="$f,rabinizer,%S,%E,$acc,%p,0,%M,%F" >> $output
+            --stats="$f,rabinizer,%S,%E,$acc,%p,0,%M,%F" >> $output
 
     if ltldo -H --timeout=$TIMEOUT -f "$f" >rabinizer-sat-TGR-$line.hoa \
-	     "autfilt -C -H --cleanup-acc --sat-minimize rabinizer-TGR-$line.hoa --name=%%r >%O #%f"; then
-	if ! autfilt rabinizer-sat-TGR-$line.hoa \
-	     --stats="$f,rabinizer-min,%S,%E,$acc,%p,0,%M,%F" >> $output; then
-	    echo "$f,rabinizer-min,,,,,-1,," >> $output
-	fi
+             "autfilt -C -H --cleanup-acc --sat-minimize rabinizer-TGR-$line.hoa --name=%%r >%O #%f"; then
+        if ! autfilt rabinizer-sat-TGR-$line.hoa \
+             --stats="$f,rabinizer-min,%S,%E,$acc,%p,0,%M,%F" >> $output; then
+            echo "$f,rabinizer-min,,,,,-1,," >> $output
+        fi
     else
-	echo "$f,rabinizer-min,,,,,$?,," >> $output
+        echo "$f,rabinizer-min,,,,,$?,," >> $output
     fi
     exit 0
 fi

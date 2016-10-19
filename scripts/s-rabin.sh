@@ -31,29 +31,29 @@ if test $# = 1; then
     ltldo -f "$f" 'rabinizer -format=hoa -auto=sr -silent -out=std %f >%H' --name="$f,rabinizer,%s,%e,%a,%p,0,%r" -H >$out
     autfilt --stats="%M,%F" $out >> $output
 
-    for pairs in 1 2 3; do
-	# Compute the smallest automaton.  We want the smallest number
-	# of acceptance sets, and among those, the smallest number of
-	# states, and among those, the smallest number of transitions.
-	# We recompute this minimum for each value of $pairs, because
-	# if a previous value of $pairs produced an automaton, it is
-	# likely to be the one we should use.
-	input=`autfilt --cleanup-acc --stats='%a,%s,%t,%F' *-SR*-$line.hoa |
-               sort          -t, -n -k3,3 |
-               sort --stable -t, -n -k2,2 |
-               sort --stable -t, -n -k1,1 |
-               sed 's/^.*,//;q'`
+    # Compute the smallest automaton.  We want the smallest number
+    # of acceptance sets, and among those, the smallest number of
+    # states, and among those, the smallest number of transitions.
+    # We recompute this minimum for each value of $pairs, because
+    # if a previous value of $pairs produced an automaton, it is
+    # likely to be the one we should use.
+    input=`autfilt --cleanup-acc --stats='%a,%s,%t,%F' *-SR*-$line.hoa |
+           sort          -t, -n -k3,3 |
+           sort --stable -t, -n -k2,2 |
+           sort --stable -t, -n -k1,1 |
+           sed 's/^.*,//;q'`
 
-	opt='acc="Rabin '$pairs'"'
-	if ltldo -H --timeout=$TIMEOUT -f "$f" >sat-SR$pairs-$line.hoa \
-		 "autfilt -C -H -S --cleanup-acc --sat-minimize='$opt' $input --name=%%r >%O #%f"; then
-	    if ! autfilt sat-SR$pairs-$line.hoa \
-		 --stats="$f,DRA$pairs,%S,%E,%A,%p,0,%M,%F" >> $output; then
-		echo "$f,DRA$pairs,,,,,-1,," >> $output
-	    fi
-	else
-	    echo "$f,DRA$pairs,,,,,$?,," >> $output
-	fi
+    for pairs in 1 2 3; do
+        opt='acc="Rabin '$pairs'"'
+        if ltldo -H --timeout=$TIMEOUT -f "$f" >sat-SR$pairs-$line.hoa \
+                 "autfilt -C -H -S --cleanup-acc --sat-minimize='$opt' $input --name=%%r >%O #%f"; then
+            if ! autfilt sat-SR$pairs-$line.hoa \
+                 --stats="$f,DRA$pairs,%S,%E,%A,%p,0,%M,%F" >> $output; then
+                echo "$f,DRA$pairs,,,,,-1,," >> $output
+            fi
+        else
+            echo "$f,DRA$pairs,,,,,$?,," >> $output
+        fi
     done
     exit 0
 fi
